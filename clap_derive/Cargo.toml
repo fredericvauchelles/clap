@@ -38,8 +38,6 @@ pulldown-cmark = { version = "0.13.0", default-features = false, optional = true
 anstyle = {version ="1.0.10", optional = true}
 
 [features]
-default = ["std"]
-std = []
 debug = []
 unstable-v5 = ["deprecated"]
 deprecated = []

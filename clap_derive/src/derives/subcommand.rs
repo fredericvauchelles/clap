@@ -16,8 +16,8 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::{format_ident, quote, quote_spanned};
 use syn::{spanned::Spanned, Data, DeriveInput, FieldsUnnamed, Generics, Variant};
 
+use crate::derives::args;
 use crate::derives::args::collect_args_fields;
-use crate::derives::{args, ALLOC_CRATE};
 use crate::item::{Item, Kind, Name};
 use crate::utils::{is_simple_ty, subty_if_name};
 
@@ -451,16 +451,9 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
                 let (span, str_ty) = match subty_if_name(ty, "Vec") {
                     Some(subty) => {
                         if is_simple_ty(subty, "String") {
-                            (subty.span(), quote!(#ALLOC_CRATE::string::String))
+                            (subty.span(), quote!(::std::string::String))
                         } else if is_simple_ty(subty, "OsString") {
-                            {
-                                #[cfg(not(feature = "std"))]
-                                abort!(
-                                    variant,
-                                    "`#[command(external_subcommand)]` (with Vec<OsString>) requires feature `std`"
-                                );
-                                (subty.span(), quote!(::std::ffi::OsString))
-                            }
+                            (subty.span(), quote!(::std::ffi::OsString))
                         } else {
                             abort!(
                                 ty.span(),
@@ -542,12 +535,12 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
                             .unwrap()
                             .map(#str_ty::from)
                     )
-                    .collect::<#ALLOC_CRATE::vec::Vec<_>>()
+                    .collect::<::std::vec::Vec<_>>()
                 ))
         },
 
         None => quote! {
-            ::core::result::Result::Err(clap::Error::raw(clap::error::ErrorKind::InvalidSubcommand, #ALLOC_CRATE::format!("the subcommand '{}' wasn't recognized", #subcommand_name_var)))
+            ::core::result::Result::Err(clap::Error::raw(clap::error::ErrorKind::InvalidSubcommand, format!("the subcommand '{}' wasn't recognized", #subcommand_name_var)))
         },
     };
 

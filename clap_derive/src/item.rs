@@ -550,15 +550,6 @@ impl Item {
                 }
 
                 Some(MagicAttrName::DefaultValueT) => {
-                    #[cfg(not(feature = "std"))]
-                    abort!(
-                        attr.name.clone(),
-                        "#[arg(default_value_t)] require feature `std`",
-
-                        note = "see \
-                            https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
-                    );
-
                     assert_attr_kind(attr, &[AttrKind::Arg])?;
 
                     let ty = if let Some(ty) = self.ty.as_ref() {
@@ -612,7 +603,7 @@ impl Item {
                     #[cfg(not(feature = "std"))]
                     abort!(
                         attr.name.clone(),
-                        "#[arg(default_values_t)] require feature `std`",
+                        "#[arg(default_values_t)] require feature `std`\n\n= note: {note}",
 
                         note = "see \
                             https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
@@ -698,7 +689,7 @@ impl Item {
                     #[cfg(not(feature = "std"))]
                     abort!(
                         attr.name.clone(),
-                        "#[arg(default_value_os_t)] require feature `std`",
+                        "#[arg(default_value_os_t)] require feature `std`\n\n= note: {note}",
 
                         note = "see \
                             https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
@@ -757,7 +748,7 @@ impl Item {
                     #[cfg(not(feature = "std"))]
                     abort!(
                         attr.name.clone(),
-                        "#[arg(default_values_os_t)] require feature `std`",
+                        "#[arg(default_values_os_t)] require feature `std`\n\n= note: {note}",
 
                         note = "see \
                             https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"

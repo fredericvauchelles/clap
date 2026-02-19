@@ -19,7 +19,6 @@ use syn::{
     Fields, FieldsNamed, Generics,
 };
 
-use crate::derives::ALLOC_CRATE;
 use crate::item::{Item, Kind, Name};
 use crate::utils::{inner_type, sub_type, Sp, Ty};
 
@@ -736,7 +735,7 @@ fn gen_parsers(
                 Name::Assigned(_) => {
                     quote_spanned! { ty.span()=>
                         #arg_matches.#get_one(#id)
-                            .ok_or_else(|| clap::Error::raw(clap::error::ErrorKind::MissingRequiredArgument, #ALLOC_CRATE::format!("the following required argument was not provided: {}", #id)))?
+                            .ok_or_else(|| clap::Error::raw(clap::error::ErrorKind::MissingRequiredArgument, format!("the following required argument was not provided: {}", #id)))?
                     }
                 }
                 Name::Derived(_) => {
