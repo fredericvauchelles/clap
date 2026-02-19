@@ -158,7 +158,7 @@ debug = ["clap_builder/debug", "clap_derive?/debug"] # Enables debug messages
 unstable-doc = ["clap_builder/unstable-doc", "derive"] # for docs.rs
 
 # Used in default
-std = ["clap_builder/std"] # support for no_std in a backwards-compatible way
+std = ["clap_builder/std", "clap_derive?/std"] # support for no_std in a backwards-compatible way
 color = ["clap_builder/color"]
 help = ["clap_builder/help"]
 usage = ["clap_builder/usage"]

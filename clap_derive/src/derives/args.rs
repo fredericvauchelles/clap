@@ -19,6 +19,7 @@ use syn::{
     Fields, FieldsNamed, Generics,
 };
 
+use crate::derives::ALLOC_CRATE;
 use crate::item::{Item, Kind, Name};
 use crate::utils::{inner_type, sub_type, Sp, Ty};
 
@@ -108,24 +109,24 @@ pub(crate) fn gen_for_struct(
         )]
         #[automatically_derived]
         impl #impl_generics clap::FromArgMatches for #item_name #ty_generics #where_clause {
-            fn from_arg_matches(__clap_arg_matches: &clap::ArgMatches) -> ::std::result::Result<Self, clap::Error> {
+            fn from_arg_matches(__clap_arg_matches: &clap::ArgMatches) -> ::core::result::Result<Self, clap::Error> {
                 Self::from_arg_matches_mut(&mut __clap_arg_matches.clone())
             }
 
-            fn from_arg_matches_mut(__clap_arg_matches: &mut clap::ArgMatches) -> ::std::result::Result<Self, clap::Error> {
+            fn from_arg_matches_mut(__clap_arg_matches: &mut clap::ArgMatches) -> ::core::result::Result<Self, clap::Error> {
                 #raw_deprecated
                 let v = #item_name #constructor;
-                ::std::result::Result::Ok(v)
+                ::core::result::Result::Ok(v)
             }
 
-            fn update_from_arg_matches(&mut self, __clap_arg_matches: &clap::ArgMatches) -> ::std::result::Result<(), clap::Error> {
+            fn update_from_arg_matches(&mut self, __clap_arg_matches: &clap::ArgMatches) -> ::core::result::Result<(), clap::Error> {
                 self.update_from_arg_matches_mut(&mut __clap_arg_matches.clone())
             }
 
-            fn update_from_arg_matches_mut(&mut self, __clap_arg_matches: &mut clap::ArgMatches) -> ::std::result::Result<(), clap::Error> {
+            fn update_from_arg_matches_mut(&mut self, __clap_arg_matches: &mut clap::ArgMatches) -> ::core::result::Result<(), clap::Error> {
                 #raw_deprecated
                 #updater
-                ::std::result::Result::Ok(())
+                ::core::result::Result::Ok(())
             }
         }
 
@@ -719,13 +720,13 @@ fn gen_parsers(
 
         Ty::VecVec => quote_spanned! { ty.span()=>
             #arg_matches.#get_occurrences(#id)
-                .map(|g| g.map(::std::iter::Iterator::collect).collect::<Vec<Vec<_>>>())
+                .map(|g| g.map(::core::iter::Iterator::collect).collect::<Vec<Vec<_>>>())
                 .unwrap_or_else(Vec::new)
         },
 
         Ty::OptionVecVec => quote_spanned! { ty.span()=>
             #arg_matches.#get_occurrences(#id)
-                .map(|g| g.map(::std::iter::Iterator::collect).collect::<Vec<Vec<_>>>())
+                .map(|g| g.map(::core::iter::Iterator::collect).collect::<Vec<Vec<_>>>())
         },
 
         Ty::Other => {
@@ -735,7 +736,7 @@ fn gen_parsers(
                 Name::Assigned(_) => {
                     quote_spanned! { ty.span()=>
                         #arg_matches.#get_one(#id)
-                            .ok_or_else(|| clap::Error::raw(clap::error::ErrorKind::MissingRequiredArgument, format!("the following required argument was not provided: {}", #id)))?
+                            .ok_or_else(|| clap::Error::raw(clap::error::ErrorKind::MissingRequiredArgument, #ALLOC_CRATE::format!("the following required argument was not provided: {}", #id)))?
                     }
                 }
                 Name::Derived(_) => {

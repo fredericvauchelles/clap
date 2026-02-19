@@ -550,6 +550,15 @@ impl Item {
                 }
 
                 Some(MagicAttrName::DefaultValueT) => {
+                    #[cfg(not(feature = "std"))]
+                    abort!(
+                        attr.name.clone(),
+                        "#[arg(default_value_t)] require feature `std`",
+
+                        note = "see \
+                            https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
+                    );
+
                     assert_attr_kind(attr, &[AttrKind::Arg])?;
 
                     let ty = if let Some(ty) = self.ty.as_ref() {
@@ -600,6 +609,14 @@ impl Item {
                 }
 
                 Some(MagicAttrName::DefaultValuesT) => {
+                    #[cfg(not(feature = "std"))]
+                    abort!(
+                        attr.name.clone(),
+                        "#[arg(default_values_t)] require feature `std`",
+
+                        note = "see \
+                            https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
+                    );
                     assert_attr_kind(attr, &[AttrKind::Arg])?;
 
                     let ty = if let Some(ty) = self.ty.as_ref() {
@@ -678,6 +695,15 @@ impl Item {
                 }
 
                 Some(MagicAttrName::DefaultValueOsT) => {
+                    #[cfg(not(feature = "std"))]
+                    abort!(
+                        attr.name.clone(),
+                        "#[arg(default_value_os_t)] require feature `std`",
+
+                        note = "see \
+                            https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
+                    );
+
                     assert_attr_kind(attr, &[AttrKind::Arg])?;
 
                     let ty = if let Some(ty) = self.ty.as_ref() {
@@ -728,6 +754,15 @@ impl Item {
                 }
 
                 Some(MagicAttrName::DefaultValuesOsT) => {
+                    #[cfg(not(feature = "std"))]
+                    abort!(
+                        attr.name.clone(),
+                        "#[arg(default_values_os_t)] require feature `std`",
+
+                        note = "see \
+                            https://docs.rs/clap/latest/clap/_derive/index.html#arg-attributes"
+                    );
+
                     assert_attr_kind(attr, &[AttrKind::Arg])?;
 
                     let ty = if let Some(ty) = self.ty.as_ref() {

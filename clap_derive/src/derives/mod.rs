@@ -21,3 +21,28 @@ pub(crate) use self::parser::derive_parser;
 pub(crate) use args::derive_args;
 pub(crate) use subcommand::derive_subcommand;
 pub(crate) use value_enum::derive_value_enum;
+
+const ALLOC_CRATE: lazy_tokens::LazyTokens<syn::TypePath> = lazy_tokens::LazyTokens::new(|| {
+    #[cfg(feature = "std")]
+    return syn::parse_quote!(::std);
+    #[cfg(not(feature = "std"))]
+    return syn::parse_quote!(::alloc);
+});
+
+mod lazy_tokens {
+    use proc_macro2::TokenStream;
+    use quote::ToTokens;
+    use std::ops::Deref;
+    use std::sync::LazyLock;
+    pub(super) struct LazyTokens<T>(LazyLock<T>);
+    impl<T> LazyTokens<T> {
+        pub(super) const fn new(init: fn() -> T) -> Self {
+            Self(LazyLock::new(init))
+        }
+    }
+    impl<T: ToTokens> ToTokens for LazyTokens<T> {
+        fn to_tokens(&self, tokens: &mut TokenStream) {
+            self.0.deref().to_tokens(tokens)
+        }
+    }
+}

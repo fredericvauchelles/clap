@@ -33,10 +33,10 @@ pub(crate) fn from_arg_matches(name: &Ident) -> proc_macro2::TokenStream {
     quote! {
         #[automatically_derived]
         impl clap::FromArgMatches for #name {
-            fn from_arg_matches(_m: &clap::ArgMatches) -> ::std::result::Result<Self, clap::Error> {
+            fn from_arg_matches(_m: &clap::ArgMatches) -> ::core::result::Result<Self, clap::Error> {
                 unimplemented!()
             }
-            fn update_from_arg_matches(&mut self, matches: &clap::ArgMatches) -> ::std::result::Result<(), clap::Error>{
+            fn update_from_arg_matches(&mut self, matches: &clap::ArgMatches) -> ::core::result::Result<(), clap::Error>{
                 unimplemented!()
             }
         }
@@ -88,10 +88,10 @@ pub(crate) fn value_enum(name: &Ident) -> proc_macro2::TokenStream {
             fn value_variants<'a>() -> &'a [Self]{
                 unimplemented!()
             }
-            fn from_str(_input: &str, _ignore_case: bool) -> ::std::result::Result<Self, String> {
+            fn from_str(_input: &str, _ignore_case: bool) -> ::core::result::Result<Self, String> {
                 unimplemented!()
             }
-            fn to_possible_value<'a>(&self) -> ::std::option::Option<clap::builder::PossibleValue>{
+            fn to_possible_value<'a>(&self) -> ::core::option::Option<clap::builder::PossibleValue>{
                 unimplemented!()
             }
         }

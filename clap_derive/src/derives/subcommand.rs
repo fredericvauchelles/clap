@@ -16,8 +16,8 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::{format_ident, quote, quote_spanned};
 use syn::{spanned::Spanned, Data, DeriveInput, FieldsUnnamed, Generics, Variant};
 
-use crate::derives::args;
 use crate::derives::args::collect_args_fields;
+use crate::derives::{args, ALLOC_CRATE};
 use crate::item::{Item, Kind, Name};
 use crate::utils::{is_simple_ty, subty_if_name};
 
@@ -88,13 +88,13 @@ pub(crate) fn gen_for_enum(
         )]
         #[automatically_derived]
         impl #impl_generics clap::FromArgMatches for #item_name #ty_generics #where_clause {
-            fn from_arg_matches(__clap_arg_matches: &clap::ArgMatches) -> ::std::result::Result<Self, clap::Error> {
+            fn from_arg_matches(__clap_arg_matches: &clap::ArgMatches) -> ::core::result::Result<Self, clap::Error> {
                 Self::from_arg_matches_mut(&mut __clap_arg_matches.clone())
             }
 
             #from_arg_matches
 
-            fn update_from_arg_matches(&mut self, __clap_arg_matches: &clap::ArgMatches) -> ::std::result::Result<(), clap::Error> {
+            fn update_from_arg_matches(&mut self, __clap_arg_matches: &clap::ArgMatches) -> ::core::result::Result<(), clap::Error> {
                 self.update_from_arg_matches_mut(&mut __clap_arg_matches.clone())
             }
             #update_from_arg_matches
@@ -451,9 +451,16 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
                 let (span, str_ty) = match subty_if_name(ty, "Vec") {
                     Some(subty) => {
                         if is_simple_ty(subty, "String") {
-                            (subty.span(), quote!(::std::string::String))
+                            (subty.span(), quote!(#ALLOC_CRATE::string::String))
                         } else if is_simple_ty(subty, "OsString") {
-                            (subty.span(), quote!(::std::ffi::OsString))
+                            {
+                                #[cfg(not(feature = "std"))]
+                                abort!(
+                                    variant,
+                                    "`#[command(external_subcommand)]` (with Vec<OsString>) requires feature `std`"
+                                );
+                                (subty.span(), quote!(::std::ffi::OsString))
+                            }
                         } else {
                             abort!(
                                 ty.span(),
@@ -498,7 +505,7 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
 
         Ok(quote! {
             if #subcommand_name_var == #sub_name && !#sub_arg_matches_var.contains_id("") {
-                return ::std::result::Result::Ok(Self :: #variant_name #constructor_block)
+                return ::core::result::Result::Ok(Self :: #variant_name #constructor_block)
             }
         })
     }).collect::<Result<Vec<_>, syn::Error>>()?;
@@ -514,7 +521,7 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
                         .unwrap_or_default()
                     {
                         let __clap_res = <#ty as clap::FromArgMatches>::from_arg_matches_mut(__clap_arg_matches)?;
-                        return ::std::result::Result::Ok(Self :: #variant_name (__clap_res));
+                        return ::core::result::Result::Ok(Self :: #variant_name (__clap_res));
                     }
                 })
             }
@@ -527,26 +534,26 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
 
     let wildcard = match ext_subcmd {
         Some((span, var_name, str_ty)) => quote_spanned! { span=>
-                ::std::result::Result::Ok(Self::#var_name(
-                    ::std::iter::once(#str_ty::from(#subcommand_name_var))
+                ::core::result::Result::Ok(Self::#var_name(
+                    ::core::iter::once(#str_ty::from(#subcommand_name_var))
                     .chain(
                         #sub_arg_matches_var
                             .remove_many::<#str_ty>("")
                             .unwrap()
                             .map(#str_ty::from)
                     )
-                    .collect::<::std::vec::Vec<_>>()
+                    .collect::<#ALLOC_CRATE::vec::Vec<_>>()
                 ))
         },
 
         None => quote! {
-            ::std::result::Result::Err(clap::Error::raw(clap::error::ErrorKind::InvalidSubcommand, format!("the subcommand '{}' wasn't recognized", #subcommand_name_var)))
+            ::core::result::Result::Err(clap::Error::raw(clap::error::ErrorKind::InvalidSubcommand, #ALLOC_CRATE::format!("the subcommand '{}' wasn't recognized", #subcommand_name_var)))
         },
     };
 
     let raw_deprecated = args::raw_deprecated();
     Ok(quote! {
-        fn from_arg_matches_mut(__clap_arg_matches: &mut clap::ArgMatches) -> ::std::result::Result<Self, clap::Error> {
+        fn from_arg_matches_mut(__clap_arg_matches: &mut clap::ArgMatches) -> ::core::result::Result<Self, clap::Error> {
             #raw_deprecated
 
             #( #child_subcommands )else*
@@ -557,7 +564,7 @@ fn gen_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStream, sy
 
                 #wildcard
             } else {
-                ::std::result::Result::Err(clap::Error::raw(clap::error::ErrorKind::MissingSubcommand, "a subcommand is required but one was not provided"))
+                ::core::result::Result::Err(clap::Error::raw(clap::error::ErrorKind::MissingSubcommand, "a subcommand is required but one was not provided"))
             }
         }
     })
@@ -631,7 +638,7 @@ fn gen_update_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStr
                     if <#ty as clap::Subcommand>::has_subcommand(__clap_name) {
                         if let Self :: #variant_name (child) = s {
                             <#ty as clap::FromArgMatches>::update_from_arg_matches_mut(child, __clap_arg_matches)?;
-                            return ::std::result::Result::Ok(());
+                            return ::core::result::Result::Ok(());
                         }
                     }
                 })
@@ -648,7 +655,7 @@ fn gen_update_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStr
         fn update_from_arg_matches_mut<'b>(
             &mut self,
             __clap_arg_matches: &mut clap::ArgMatches,
-        ) -> ::std::result::Result<(), clap::Error> {
+        ) -> ::core::result::Result<(), clap::Error> {
             #raw_deprecated
 
             if let Some(__clap_name) = __clap_arg_matches.subcommand_name() {
@@ -660,7 +667,7 @@ fn gen_update_from_arg_matches(variants: &[(&Variant, Item)]) -> Result<TokenStr
                     }
                 }
             }
-            ::std::result::Result::Ok(())
+            ::core::result::Result::Ok(())
         }
     })
 }
