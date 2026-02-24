@@ -3,8 +3,6 @@
 #![cfg_attr(not(feature = "error-context"), allow(dead_code))]
 #![cfg_attr(not(feature = "error-context"), allow(unused_imports))]
 
-use std::borrow::Cow;
-
 use crate::builder::Command;
 use crate::builder::StyledStr;
 use crate::builder::Styles;
@@ -15,6 +13,9 @@ use crate::error::ContextValue;
 use crate::error::ErrorKind;
 use crate::output::TAB;
 use crate::ArgAction;
+use std::borrow::Cow;
+use std::format;
+use std::string::String;
 
 /// Defines how to format an error for displaying to the user
 pub trait ErrorFormatter: Sized {

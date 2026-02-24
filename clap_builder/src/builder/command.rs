@@ -1,13 +1,5 @@
 #![cfg_attr(not(feature = "usage"), allow(unused_mut))]
 
-// Std
-use std::env;
-use std::ffi::OsString;
-use std::fmt;
-use std::io;
-use std::ops::Index;
-use std::path::Path;
-
 // Internal
 use crate::builder::app_settings::{AppFlags, AppSettings};
 use crate::builder::arg_settings::ArgSettings;
@@ -29,6 +21,16 @@ use crate::parser::{ArgMatcher, ArgMatches, Parser};
 use crate::util::ChildGraph;
 use crate::util::{color::ColorChoice, Id};
 use crate::{Error, INTERNAL_ERROR_MSG};
+use std::borrow::ToOwned;
+use std::ffi::OsString;
+use std::fmt;
+use std::io;
+use std::ops::Index;
+use std::path::Path;
+use std::string::{String, ToString};
+use std::vec::Vec;
+// Std
+use std::{env, format, vec};
 
 #[cfg(debug_assertions)]
 use crate::builder::debug_asserts::assert_app;

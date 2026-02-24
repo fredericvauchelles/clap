@@ -2,6 +2,8 @@ use crate::builder::IntoResettable;
 use crate::builder::Str;
 use crate::builder::StyledStr;
 use crate::util::eq_ignore_case;
+use std::format;
+use std::vec::Vec;
 
 /// A possible value of an argument.
 ///

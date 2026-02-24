@@ -486,6 +486,7 @@ dependencies = [
  "anstyle",
  "backtrace",
  "clap_lex 1.0.0",
+ "clap_no_std",
  "color-print",
  "snapbox",
  "static_assertions",
@@ -556,6 +557,10 @@ dependencies = [
  "roff",
  "snapbox",
 ]
+
+[[package]]
+name = "clap_no_std"
+version = "0.1.0"
 
 [[package]]
 name = "codepage"

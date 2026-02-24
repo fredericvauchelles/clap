@@ -1,9 +1,9 @@
-use std::iter::Iterator;
-use std::ops::Index;
-
 use crate::builder::OsStr;
 use crate::Arg;
 use crate::INTERNAL_ERROR_MSG;
+use std::iter::Iterator;
+use std::ops::Index;
+use std::vec::Vec;
 
 #[derive(PartialEq, Eq, Debug, Clone)]
 pub(crate) struct Key {

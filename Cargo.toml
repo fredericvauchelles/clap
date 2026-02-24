@@ -7,7 +7,7 @@ members = [
   "clap_lex",
   "clap_complete",
   "clap_complete_nushell",
-  "clap_mangen",
+  "clap_mangen", "clap_no_std",
 ]
 
 [workspace.package]

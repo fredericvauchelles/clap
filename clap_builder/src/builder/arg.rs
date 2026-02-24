@@ -1,14 +1,3 @@
-// Std
-#[cfg(feature = "env")]
-use std::env;
-#[cfg(feature = "env")]
-use std::ffi::OsString;
-use std::{
-    cmp::{Ord, Ordering},
-    fmt::{self, Display, Formatter},
-    str,
-};
-
 // Internal
 use super::{ArgFlags, ArgSettings};
 #[cfg(feature = "unstable-ext")]
@@ -27,6 +16,15 @@ use crate::ArgAction;
 use crate::Id;
 use crate::ValueHint;
 use crate::INTERNAL_ERROR_MSG;
+use std::borrow::ToOwned;
+// Std
+#[cfg(feature = "env")]
+use std::env;
+#[cfg(feature = "env")]
+use std::ffi::OsString;
+use std::string::String;
+use std::vec::Vec;
+use std::{cmp::{Ord, Ordering}, fmt::{self, Display, Formatter}, format, str, vec};
 
 /// The abstract representation of a command line argument. Used to set all the options and
 /// relationships that define a valid argument for the program.
@@ -4834,6 +4832,8 @@ pub trait ArgExt: Extension {}
 mod test {
     use super::Arg;
     use super::ArgAction;
+    use std::string::ToString;
+    use std::vec;
 
     #[test]
     fn flag_display_long() {

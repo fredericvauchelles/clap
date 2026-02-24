@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 use crate::builder::ValueRange;
 use crate::mkeymap::KeyType;
 use crate::util::FlatSet;
@@ -7,6 +5,10 @@ use crate::util::Id;
 use crate::ArgAction;
 use crate::INTERNAL_ERROR_MSG;
 use crate::{Arg, Command, ValueHint};
+use std::cmp::Ordering;
+use std::string::{String, ToString};
+use std::vec::Vec;
+use std::{format, vec};
 
 pub(crate) fn assert_app(cmd: &Command) {
     debug!("Command::_debug_asserts");

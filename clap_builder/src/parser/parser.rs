@@ -1,10 +1,9 @@
-// Std
-use std::{
-    cell::Cell,
-    ffi::{OsStr, OsString},
-};
-
 use clap_lex::OsStrExt as _;
+use std::borrow::ToOwned;
+use std::string::{String, ToString};
+use std::vec::Vec;
+// Std
+use std::{cell::Cell, ffi::{OsStr, OsString}, format, vec};
 
 // Internal
 use crate::builder::{Arg, Command};

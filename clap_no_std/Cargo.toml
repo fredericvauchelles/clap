@@ -1,0 +1,17 @@
+[package]
+name = "clap_no_std"
+version = "0.1.0"
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+include.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
+
+[features]
+default = ["std"]
+std = []

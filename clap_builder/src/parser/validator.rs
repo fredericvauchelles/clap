@@ -9,6 +9,10 @@ use crate::util::FlatMap;
 use crate::util::FlatSet;
 use crate::util::Id;
 use crate::INTERNAL_ERROR_MSG;
+use std::borrow::ToOwned;
+use std::string::ToString;
+use std::vec;
+use std::vec::Vec;
 
 pub(crate) struct Validator<'cmd> {
     cmd: &'cmd Command,

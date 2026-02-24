@@ -1,3 +1,6 @@
+use std::vec;
+use std::vec::Vec;
+
 #[derive(Debug)]
 struct Child<T> {
     id: T,

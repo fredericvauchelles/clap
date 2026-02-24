@@ -3,9 +3,12 @@
 
 use crate::builder::PossibleValue;
 use crate::{ArgMatches, Command, Error};
+use std::boxed::Box;
 use std::convert::Infallible;
 
 use std::ffi::OsString;
+use std::format;
+use std::string::String;
 
 /// Parse command-line arguments into `Self`.
 ///

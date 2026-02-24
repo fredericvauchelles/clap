@@ -1,4 +1,6 @@
+use std::format;
 use std::str::FromStr;
+use std::string::String;
 
 /// Provide shell with hint on how to complete an argument.
 ///

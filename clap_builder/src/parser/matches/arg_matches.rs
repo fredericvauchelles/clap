@@ -1,10 +1,3 @@
-// Std
-use std::any::Any;
-use std::ffi::{OsStr, OsString};
-use std::fmt::Debug;
-use std::iter::{Cloned, Flatten, Map};
-use std::slice::Iter;
-
 // Internal
 #[cfg(debug_assertions)]
 use crate::builder::Str;
@@ -16,6 +9,15 @@ use crate::util::AnyValueId;
 use crate::util::FlatMap;
 use crate::util::Id;
 use crate::INTERNAL_ERROR_MSG;
+// Std
+use std::any::Any;
+use std::boxed::Box;
+use std::ffi::{OsStr, OsString};
+use std::fmt::Debug;
+use std::iter::{Cloned, Flatten, Map};
+use std::slice::Iter;
+use std::string::String;
+use std::vec::Vec;
 
 /// Container for parse results.
 ///
@@ -1898,6 +1900,9 @@ fn unwrap_downcast_into<T: Any + Clone + Send + Sync + 'static>(value: AnyValue)
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::string::String;
+    use std::vec::Vec;
+    use std::{dbg, vec};
 
     use crate::ArgAction;
 

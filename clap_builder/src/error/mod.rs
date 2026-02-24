@@ -6,16 +6,6 @@
 #![cfg_attr(not(feature = "error-context"), allow(unused_mut))]
 #![cfg_attr(not(feature = "error-context"), allow(clippy::let_and_return))]
 
-// Std
-use std::{
-    borrow::Cow,
-    convert::From,
-    error,
-    fmt::{self, Debug, Display, Formatter},
-    io,
-    result::Result as StdResult,
-};
-
 // Internal
 use crate::builder::StyledStr;
 use crate::builder::Styles;
@@ -25,6 +15,12 @@ use crate::parser::features::suggestions;
 use crate::util::FlatMap;
 use crate::util::{color::ColorChoice, SUCCESS_CODE, USAGE_CODE};
 use crate::Command;
+use std::borrow::ToOwned;
+use std::boxed::Box;
+use std::string::{String, ToString};
+use std::vec::Vec;
+// Std
+use std::{borrow::Cow, convert::From, error, fmt::{self, Debug, Display, Formatter}, io, result::Result as StdResult, vec};
 
 #[cfg(feature = "error-context")]
 mod context;

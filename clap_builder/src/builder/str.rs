@@ -1,5 +1,7 @@
 #[cfg(feature = "string")]
 use std::borrow::Cow;
+use std::string::String;
+use std::vec::Vec;
 
 /// A UTF-8-encoded fixed string
 ///
@@ -273,6 +275,9 @@ pub(crate) mod inner {
 
 #[cfg(not(feature = "string"))]
 pub(crate) mod inner {
+    use std::borrow::ToOwned;
+    use std::string::String;
+
     #[derive(Clone)]
     pub(crate) struct Inner(pub(crate) &'static str);
 

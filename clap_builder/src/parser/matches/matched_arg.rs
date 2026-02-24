@@ -1,16 +1,12 @@
-// Std
-use std::{
-    ffi::{OsStr, OsString},
-    iter::{Cloned, Flatten},
-    slice::Iter,
-};
-
 use crate::builder::ArgPredicate;
 use crate::parser::ValueSource;
 use crate::util::eq_ignore_case;
 use crate::util::AnyValue;
 use crate::util::AnyValueId;
 use crate::INTERNAL_ERROR_MSG;
+use std::vec::Vec;
+// Std
+use std::{ffi::{OsStr, OsString}, iter::{Cloned, Flatten}, slice::Iter, vec};
 
 #[derive(Debug, Clone)]
 pub(crate) struct MatchedArg {
@@ -208,6 +204,7 @@ impl Eq for MatchedArg {}
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::string::String;
 
     #[test]
     fn test_grouped_vals_first() {

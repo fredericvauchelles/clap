@@ -1,5 +1,8 @@
 // Internal
 use crate::builder::Command;
+use std::borrow::ToOwned;
+use std::string::{String, ToString};
+use std::vec::Vec;
 
 /// Find strings from an iterable of `possible_values` similar to a given value `v`
 /// Returns a Vec of all possible values that exceed a similarity threshold
@@ -88,6 +91,7 @@ where
 #[cfg(all(test, feature = "suggestions"))]
 mod test {
     use super::*;
+    use std::vec;
 
     #[test]
     fn missing_letter() {

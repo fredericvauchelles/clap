@@ -1,6 +1,7 @@
 // Internal
 use crate::builder::IntoResettable;
 use crate::util::Id;
+use std::vec::Vec;
 
 /// Specifies a logical group of [arguments]
 ///

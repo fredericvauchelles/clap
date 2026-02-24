@@ -1,5 +1,7 @@
 use crate::builder::PossibleValue;
 use crate::derive::ValueEnum;
+use std::format;
+use std::string::String;
 
 /// Represents the color preferences for program output
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Default)]

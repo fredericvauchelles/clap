@@ -8,6 +8,7 @@ use crate::builder::StyledStr;
 use crate::builder::ValueHint;
 use crate::builder::ValueParser;
 use crate::builder::ValueRange;
+use std::string::String;
 
 /// Clearable builder value
 ///

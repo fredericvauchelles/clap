@@ -1,8 +1,3 @@
-// Std
-use std::ffi::OsString;
-use std::mem;
-use std::ops::Deref;
-
 // Internal
 use crate::builder::{Arg, ArgPredicate, Command};
 use crate::parser::Identifier;
@@ -12,6 +7,12 @@ use crate::util::AnyValue;
 use crate::util::FlatMap;
 use crate::util::Id;
 use crate::INTERNAL_ERROR_MSG;
+use std::boxed::Box;
+// Std
+use std::ffi::OsString;
+use std::mem;
+use std::ops::Deref;
+use std::vec::Vec;
 
 #[derive(Debug, Default)]
 pub(crate) struct ArgMatcher {

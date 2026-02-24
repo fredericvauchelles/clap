@@ -1,6 +1,7 @@
 use crate::builder::Str;
 #[cfg(feature = "string")]
 use std::borrow::Cow;
+use std::string::String;
 
 /// [`Arg`][crate::Arg] or [`ArgGroup`][crate::ArgGroup] identifier
 ///

@@ -1,6 +1,8 @@
 use crate::builder::Str;
 #[cfg(feature = "string")]
 use std::borrow::Cow;
+use std::borrow::ToOwned;
+use std::string::String;
 
 /// A UTF-8-encoded fixed string
 ///
@@ -288,6 +290,8 @@ pub(crate) mod inner {
 
 #[cfg(not(feature = "string"))]
 pub(crate) mod inner {
+    use std::borrow::ToOwned;
+
     #[derive(Clone)]
     pub(crate) struct Inner(&'static std::ffi::OsStr);
 

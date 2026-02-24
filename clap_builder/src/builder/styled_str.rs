@@ -1,5 +1,6 @@
 #![cfg_attr(not(feature = "usage"), allow(dead_code))]
-use std::borrow::Cow;
+use std::borrow::{Cow, ToOwned};
+use std::string::String;
 
 /// Terminal-styling container
 ///
@@ -266,6 +267,7 @@ mod wrap_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::string::ToString;
 
     #[test]
     fn from_cow_borrowed() {

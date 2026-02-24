@@ -11,8 +11,12 @@
 #![warn(clippy::print_stderr)]
 #![warn(clippy::print_stdout)]
 
+#![no_std]
+
 #[cfg(not(feature = "std"))]
-compile_error!("`std` feature is currently required to build `clap`");
+extern crate clap_no_std as std;
+#[cfg(feature = "std")]
+extern crate std;
 
 pub use crate::builder::ArgAction;
 pub use crate::builder::Command;
