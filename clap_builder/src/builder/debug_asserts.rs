@@ -6,7 +6,7 @@ use crate::ArgAction;
 use crate::INTERNAL_ERROR_MSG;
 use crate::{Arg, Command, ValueHint};
 use std::cmp::Ordering;
-use std::string::{String, ToString};
+use std::string::String;
 use std::vec::Vec;
 use std::{format, vec};
 
@@ -360,6 +360,7 @@ pub(crate) fn assert_app(cmd: &Command) {
 
     #[cfg(feature = "help")]
     if let Some(help_template) = cmd.get_help_template() {
+        use std::string::ToString;
         assert!(
             !help_template.to_string().contains("{flags}"),
             "Command {}: {}",

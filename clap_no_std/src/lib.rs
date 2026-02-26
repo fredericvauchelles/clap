@@ -68,6 +68,12 @@ mod std {
         pub use alloc::vec::*;
     }
     pub use alloc::format;
+    #[macro_export]
+    macro_rules! vec {
+        ($($tt:tt)*) => {
+            $crate::alloc::vec!($($tt)*)
+        };
+    }
 }
 #[cfg(not(feature = "std"))]
 pub use crate::std::*;

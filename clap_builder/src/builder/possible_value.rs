@@ -2,7 +2,6 @@ use crate::builder::IntoResettable;
 use crate::builder::Str;
 use crate::builder::StyledStr;
 use crate::util::eq_ignore_case;
-use std::format;
 use std::vec::Vec;
 
 /// A possible value of an argument.
@@ -187,6 +186,7 @@ impl PossibleValue {
     /// but wrapped in quotes if it contains whitespace
     #[cfg(feature = "help")]
     pub(crate) fn get_visible_quoted_name(&self) -> Option<std::borrow::Cow<'_, str>> {
+        use std::format;
         if !self.hide {
             Some(if self.name.contains(char::is_whitespace) {
                 format!("{:?}", self.name).into()

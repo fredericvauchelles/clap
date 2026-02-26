@@ -1,6 +1,5 @@
 // Internal
 use crate::builder::Command;
-use std::borrow::ToOwned;
 use std::string::{String, ToString};
 use std::vec::Vec;
 
@@ -14,6 +13,7 @@ where
     I: IntoIterator<Item = T>,
 {
     use std::cmp::Ordering;
+    use std::borrow::ToOwned;
 
     let mut candidates: Vec<(f64, String)> = Vec::new();
     for pv in possible_values {
